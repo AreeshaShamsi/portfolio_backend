@@ -4,7 +4,10 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "dev:ts": "tsx watch src/server.ts",
+    "start:ts": "tsx src/server.ts",
+    "build:ts": "tsc --project tsconfig.json"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +19,14 @@
     "express": "^5.2.1",
     "marked": "^14.1.2",
     "mongoose": "^9.4.1",
+    "multer": "^1.4.5-lts.2",
     "nodemon": "^3.1.14",
     "slugify": "^1.6.9"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.13.10",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
   }
 }
