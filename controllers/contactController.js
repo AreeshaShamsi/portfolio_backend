@@ -1,58 +1,49 @@
-import mongoose from "mongoose";
 import Contact from "../models/Contact.js";
 
-const isNonEmptyString = (value) =>
-  typeof value === "string" && value.trim().length > 0;
-
-export const getContacts = async (_req, res) => {
+// GET all
+export const getContacts = async (req, res) => {
   try {
-    const contacts = await Contact.find().sort({ createdAt: 1 });
-    return res.status(200).json(contacts);
+    const contacts = await Contact.find();
+    res.status(200).json(contacts);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
-export const addContact = async (req, res) => {
+// CREATE
+export const createContact = async (req, res) => {
   try {
-    const { label, value, href } = req.body || {};
+    const { label, value, href } = req.body;
 
-    if (!isNonEmptyString(label)) {
-      return res.status(400).json({ message: "label is required" });
-    }
-    if (!isNonEmptyString(value)) {
-      return res.status(400).json({ message: "value is required" });
-    }
-    if (!isNonEmptyString(href)) {
-      return res.status(400).json({ message: "href is required" });
-    }
+    const newContact = new Contact({ label, value, href });
+    const saved = await newContact.save();
 
-    const contact = await Contact.create({
-      label: label.trim(),
-      value: value.trim(),
-      href: href.trim(),
-    });
-
-    return res.status(201).json(contact);
+    res.status(201).json(saved);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
+// UPDATE
+export const updateContact = async (req, res) => {
+  try {
+    const updated = await Contact.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    res.json(updated);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// DELETE
 export const deleteContact = async (req, res) => {
   try {
-    const { id } = req.params;
-    if (!mongoose.isValidObjectId(id)) {
-      return res.status(400).json({ message: "Invalid contact ID" });
-    }
-
-    const deleted = await Contact.findByIdAndDelete(id);
-    if (!deleted) {
-      return res.status(404).json({ message: "Contact not found" });
-    }
-
-    return res.status(200).json({ message: "Contact deleted successfully" });
+    await Contact.findByIdAndDelete(req.params.id);
+    res.json({ message: "Deleted successfully" });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };

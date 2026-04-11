@@ -2,9 +2,18 @@ import mongoose from "mongoose";
 
 const contactSchema = new mongoose.Schema(
   {
-    label: { type: String, required: true, trim: true },
-    value: { type: String, required: true, trim: true },
-    href: { type: String, required: true, trim: true },
+    label: {
+      type: String,
+      required: true,
+    },
+    value: {
+      type: String,
+      required: true,
+    },
+    href: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

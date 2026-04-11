@@ -3,7 +3,7 @@ import { getAbout, updateAbout } from "../controllers/aboutController.js";
 
 const router = express.Router();
 
-router.get("/api/about", getAbout);
-router.put("/api/about", updateAbout);
+router.get("/about", getAbout);
+router.put("/about", updateAbout);
 
 export default router;
